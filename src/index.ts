@@ -1,10 +1,9 @@
-export { createMixServerContext } from "./server";
-export * from "./server.js";
-export * from "./client.js";
-
 import React, { use } from "react";
-import { useClientContext } from "./client";
-import { context, createMixServerContext } from "./server";
+import { useClientContext } from "./client.js";
+import { Exports, getMixContext } from "./server.js";
+
+export { getMixContext } from "./server";
+export const createMixServerContext = Exports.createMixServerContext;
 
 export const getComponentType = () =>
   !React["useState"]
@@ -13,9 +12,11 @@ export const getComponentType = () =>
     ? "Pages"
     : "Client";
 
-export const useMixContext = <T>({ name }: { name: string; type: T }) => {
-  if (getComponentType() === "Server") return use(context().get<T>(name));
-  return useClientContext<T>(name);
+export const useMixContext = <T>(context: { name: string; type: T }) => {
+  if (getComponentType() === "Server") {
+    return use(getMixContext<T>(context));
+  }
+  return useClientContext<T>(context.name);
 };
 
 export const createMixContext = <T>(name: string) => {

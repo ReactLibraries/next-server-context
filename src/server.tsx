@@ -2,7 +2,7 @@
 import { ReactNode, cache } from "react";
 import { ClientProvider } from "./client.js";
 
-export const context = cache(() => {
+const context = cache(() => {
   const property: {
     [key: string]: {
       resolve: (value: unknown) => void;
@@ -29,7 +29,8 @@ export const context = cache(() => {
   };
 });
 
-export const createMixServerContext = <T,>(name: string = "") => {
+export const Exports = async () => {};
+Exports.createMixServerContext = <T,>(name: string = "") => {
   const Provider = ({ children, value }: { children: ReactNode; value: T }) => {
     context().set(name, value);
     return (
@@ -46,4 +47,5 @@ export const createMixServerContext = <T,>(name: string = "") => {
   return result;
 };
 
-export const getMixContext = <T,>(name: string = "") => context().get<T>(name);
+export const getMixContext = async <T,>({ name }: { name: string; type: T }) =>
+  context().get<T>(name);

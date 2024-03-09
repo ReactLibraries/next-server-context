@@ -80,14 +80,12 @@ Server component handles retrieving values from context
 ```tsx
 "use server";
 
-import { useMixContext } from "next-approuter-context";
 import { context1, context2 } from "./context";
+import { getMixContext } from "./next-approuter-context";
 
-export const Server = () => {
-  // If the component is async, it should be written as follows
-  // const { text, color } = await getMixContext<ContextType1>();
-  const { text, color } = useMixContext(context1);
-  const value = useMixContext(context2);
+export const Server = async () => {
+  const { text, color } = await getMixContext(context1);
+  const value = await getMixContext(context2);
   return (
     <>
       <div style={{ color }}>
